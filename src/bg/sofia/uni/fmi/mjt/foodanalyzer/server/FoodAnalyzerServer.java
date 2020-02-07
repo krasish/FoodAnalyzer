@@ -8,14 +8,28 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 
 public class FoodAnalyzerServer implements Closeable {
-    private static final String SERVER_HOST = "localhost";
+    private static final int MAX_PORT = 65_535;
     private int serverPort;
+    private String host;
+
+    private static final String WRONG_PORT_ERROR = "Port not in supported range";
+    private static final String SERVER_ERROR = "Server was unable to start.";
+    private static final String NULL_HOST = "Host must not be null";
+    private static final String CLOSING_PROCESSOR_ERROR = "Closing processor was not successful";
 
     private ServerSocketChannel serverSocketChannel;
     private Selector selector;
 
-    public FoodAnalyzerServer(int port) {
+    public FoodAnalyzerServer(int port, String host) {
+        if (port < 0 || port > MAX_PORT) {
+            throw new IllegalArgumentException(WRONG_PORT_ERROR);
+        }
+        if (host == null) {
+            throw new IllegalArgumentException(NULL_HOST);
+        }
+
         serverPort = port;
+        this.host = host;
     }
 
     public void start() {
@@ -24,13 +38,14 @@ public class FoodAnalyzerServer implements Closeable {
             openSelector();
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
         } catch (IOException e) {
-            System.out.println("Server was unable to start.");
+            System.out.println(SERVER_ERROR);
             e.printStackTrace();
         }
         try (ClientProcessor processor = new ClientProcessor(selector)) {
+            System.out.println("Server started!");
             processor.process();
         } catch (IOException e) {
-            System.out.println("Closing processor was not successful");
+            System.out.println(CLOSING_PROCESSOR_ERROR);
             e.printStackTrace();
         }
 
@@ -38,7 +53,7 @@ public class FoodAnalyzerServer implements Closeable {
 
     void openServerSocketChannel() throws IOException {
         serverSocketChannel = ServerSocketChannel.open();
-        serverSocketChannel.bind(new InetSocketAddress(SERVER_HOST, serverPort));
+        serverSocketChannel.bind(new InetSocketAddress(host, serverPort));
         serverSocketChannel.configureBlocking(false);
     }
 

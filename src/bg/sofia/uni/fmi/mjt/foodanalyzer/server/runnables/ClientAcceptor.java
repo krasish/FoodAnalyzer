@@ -9,8 +9,11 @@ import java.nio.channels.SocketChannel;
 public class ClientAcceptor implements Runnable {
     private Selector selector;
     private SelectionKey key;
+    public static int count;
 
     public ClientAcceptor(Selector selector, SelectionKey key) {
+        System.out.println(count++);
+        System.out.println();
         this.selector = selector;
         this.key = key;
     }

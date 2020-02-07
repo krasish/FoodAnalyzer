@@ -31,17 +31,21 @@ public class ClientProcessor implements Closeable {
 
             if (countReadyKeys() == 0) {
                 busyWait();
+                continue;
             }
             var selectedKeys = selector.selectedKeys();
+            System.out.println(selectedKeys.size());
             Iterator<SelectionKey> iterator = selectedKeys.iterator();
 
             while (iterator.hasNext()) {
                 SelectionKey currentKey = iterator.next();
+                // System.out.println(System.currentTimeMillis());
                 if (currentKey.isAcceptable()) {
                     ClientAcceptor acceptor = new ClientAcceptor(selector, currentKey);
                     executor.execute(acceptor);
                 } else if (currentKey.isReadable()) {
-                    executor.execute(new ClientHandler(currentKey, database));
+                    ClientHandler handler = new ClientHandler(currentKey, database);
+                    executor.execute(handler);
                 }
                 iterator.remove();
             }
