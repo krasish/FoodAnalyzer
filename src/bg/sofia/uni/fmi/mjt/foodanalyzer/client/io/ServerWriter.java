@@ -1,15 +1,17 @@
-package bg.sofia.uni.fmi.mjt.foodanalyzer.client;
+package bg.sofia.uni.fmi.mjt.foodanalyzer.client.io;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Scanner;
 
+import bg.sofia.uni.fmi.mjt.foodanalyzer.client.resolver.CommandResolver;
+
 public class ServerWriter implements Runnable {
     private static final int BUFFER_SIZE = 2048;
 
     private static final String WRITE_TO_SERVER_ERROR = "Writing to socketChannel was unsuccesful!";
-    private static final String QUIT_REGEX = "^\\s*quit\\s*$";
+    private static final String UNPARSABLE_COMMAND_ERROR = "Unsupported command!";
 
     SocketChannel socketChannel;
     ByteBuffer buffer;
@@ -19,14 +21,14 @@ public class ServerWriter implements Runnable {
         this.buffer = ByteBuffer.allocate(BUFFER_SIZE);
     }
 
-    boolean isQuitPrompt(String prompt) {
-        return prompt.matches(QUIT_REGEX);
-    }
-
     private String askForPrompt(Scanner scanner) {
         System.out.print("> ");
         String result = scanner.nextLine();
         return result;
+    }
+
+    private void displayCommandError() {
+        System.err.println(UNPARSABLE_COMMAND_ERROR);
     }
 
     private void writeToServer(String prompt, SocketChannel socketChannel, ByteBuffer buffer) {
@@ -44,12 +46,18 @@ public class ServerWriter implements Runnable {
     @Override
     public void run() {
         try (Scanner scanner = new Scanner(System.in)) {
+            CommandResolver resolver = new CommandResolver();
             while (true) {
                 String prompt = askForPrompt(scanner);
-                if (isQuitPrompt(prompt)) {
+                if (resolver.isQuitPrompt(prompt)) {
                     break;
                 }
-                // TODO Check if prompt contains path to image and resolve barcode if so
+                try {
+                    prompt = resolver.resolve(prompt);
+                } catch (IllegalArgumentException iae) {
+                    displayCommandError();
+                    continue;
+                }
 
                 writeToServer(prompt, socketChannel, buffer);
             }

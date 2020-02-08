@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
 
+import bg.sofia.uni.fmi.mjt.foodanalyzer.client.io.ServerReader;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.client.io.ServerWriter;
+
 public class FoodAnalyzerClient {
     private static final int MAX_PORT = 65_535;
 
