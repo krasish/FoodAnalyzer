@@ -10,14 +10,15 @@ import java.util.concurrent.CompletableFuture;
 
 public class HttpRequestHandler {
     private static final String API_KEY = "2S2HwYXxjgEKBmNqvc8mkaHrzckZZXzSDcG3wJFn";
-    private static final String BARCODE_URI_TEMPLATE = "https://api.nal.usda.gov/fdc/v1"
+    private static final String FOOD_SEARCH_ENDPOINT_URI_TEMPLATE = "https://api.nal.usda.gov/fdc/v1"
             + "/search?generalSearchInput=%s&requireAllWords=true" + "&api_key=%s";
-    private static final String FDC_ID_TEMPLATE = "https://api.nal.usda.gov/fdc/v1/%d?api_key=%s";
+    private static final String FOOD_DETAILS_ENDPOINT_TEMPLATE = "https://api.nal.usda.gov/fdc/v1/%d?api_key=%s";
+
     private static HttpClient client = HttpClient.newHttpClient();
     private static final int TIMEOUT_SECONDS = 45;
 
     public static CompletableFuture<String> handleBarcodeRequest(String barcode) {
-        String barcodeURIAsString = String.format(BARCODE_URI_TEMPLATE, barcode, API_KEY);
+        String barcodeURIAsString = String.format(FOOD_SEARCH_ENDPOINT_URI_TEMPLATE, barcode, API_KEY);
         URI barcodeURI = URI.create(barcodeURIAsString);
 
         HttpRequest barcodeRequest = HttpRequest.newBuilder(barcodeURI).timeout(Duration.ofSeconds(TIMEOUT_SECONDS))
@@ -26,8 +27,14 @@ public class HttpRequestHandler {
         return client.sendAsync(barcodeRequest, BodyHandlers.ofString()).thenApply(HttpResponse::body);
     }
 
-    public static void handleDescriptionRequest(String description) {
+    public static CompletableFuture<String> handleDescriptionRequest(String description) {
+        String descriptionURIAsString = String.format(FOOD_SEARCH_ENDPOINT_URI_TEMPLATE, description, API_KEY);
+        URI descriptionURI = URI.create(descriptionURIAsString);
 
+        HttpRequest descriptionRequest = HttpRequest.newBuilder(descriptionURI)
+                .timeout(Duration.ofSeconds(TIMEOUT_SECONDS)).build();
+
+        return client.sendAsync(descriptionRequest, BodyHandlers.ofString()).thenApply(HttpResponse::body);
     }
 
     public static void handlefdcIdRequest(int fdcId) {

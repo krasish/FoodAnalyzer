@@ -10,7 +10,7 @@ import com.google.gson.reflect.TypeToken;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Food;
 
 public class JSONParser {
-    public static List<Food> parseFromFirstEntrypoint(String inputJson) {
+    public static List<Food> parseFromFoodSearchEndpoint(String inputJson) {
         Type type = new TypeToken<List<Food>>() {
         }.getType();
 
