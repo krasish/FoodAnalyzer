@@ -1,12 +1,13 @@
 package bg.sofia.uni.fmi.mjt.foodanalyzer.server.database;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Database {
-    private Map<String, Food> descriptionMap;
-    private Map<Integer, Food> fdcIdMap;
-    private Map<String, Food> gtinUpcMap;
+    private Map<String, List<Food>> descriptionMap;
+    private Map<Integer, NutritionData> fdcIdMap;
+    private Map<String, List<Food>> gtinUpcMap;
 
     public Database() {
         fdcIdMap = new ConcurrentHashMap<>();
@@ -14,23 +15,28 @@ public class Database {
         gtinUpcMap = new ConcurrentHashMap<>();
     }
 
-    public void addFood(Food food) {
-        descriptionMap.putIfAbsent(food.getDescription(), food);
-        fdcIdMap.putIfAbsent(food.getFdcId(), food);
-        if (food.getGtinUpc() != null) {
-            gtinUpcMap.putIfAbsent(food.getGtinUpc(), null);
+    public void addFood(List<Food> foods) {
+        descriptionMap.putIfAbsent(foods.get(0).getDescription(), foods);
+        if (foods.get(0).getGtinUpc() != null) {
+            gtinUpcMap.putIfAbsent(foods.get(0).getGtinUpc(), null);
         }
     }
 
-    public Food getByDescription(String description) {
+    public void addNutritionData(NutritionData nutritionData) {
+        if (nutritionData != null) {
+            fdcIdMap.put(nutritionData.getFdcId(), nutritionData);
+        }
+    }
+
+    public List<Food> getByDescription(String description) {
         return descriptionMap.get(description);
     }
 
-    public Food getByfdcId(int fdcID) {
+    public NutritionData getByfdcId(int fdcID) {
         return fdcIdMap.get(fdcID);
     }
 
-    public Food getBygtinUpc(String gtinUpc) {
-        return gtinUpcMap.get(gtinUpc);
+    public List<Food> getByBarcode(String barcode) {
+        return gtinUpcMap.get(barcode);
     }
 }

@@ -19,6 +19,7 @@ public class CommandParser {
 
         if (descriptionMatcher.find()) {
             String description = descriptionMatcher.group(1);
+            description = getFormattedDescription(description);
             return new GetFoodByDescriptionCommand(socketChannel, description);
         } else if (barcodeMatcher.find()) {
             String barcode = barcodeMatcher.group(1);
@@ -29,5 +30,9 @@ public class CommandParser {
         } else {
             return new InvalidCommand(socketChannel);
         }
+    }
+
+    public static String getFormattedDescription(String description) {
+        return description.strip().replaceAll("\\s+", "%20");
     }
 }
