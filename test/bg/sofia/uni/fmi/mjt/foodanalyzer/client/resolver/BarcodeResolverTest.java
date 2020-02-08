@@ -14,7 +14,7 @@ public class BarcodeResolverTest {
     @Test
     public void testResolveImageReturnsCorrectBarcode() {
         String pathToImage = "C:\\Users\\krasi\\eclipse-workspace\\FoodAnalyzer\\resources\\barcode.gif";
-        String expectedOutput = "725272730706";
+        String expectedOutput = "009427402305";
 
         try {
             assertEquals("Image with barcode 72527273070 is resolved", expectedOutput,

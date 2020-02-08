@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Food;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.NutritionData;
 
 public class JSONParser {
     public static List<Food> parseFromFoodSearchEndpoint(String inputJson) {
@@ -18,6 +19,14 @@ public class JSONParser {
 
         List<Food> list = gson.fromJson(inputJson, type);
         return list;
+    }
+
+    public static NutritionData parseFromFoodDetailsEndpoint(String inputJson) {
+        Gson gson = new Gson();
+
+        NutritionData nutrientData = gson.fromJson(inputJson, NutritionData.class);
+
+        return nutrientData;
     }
 
 }

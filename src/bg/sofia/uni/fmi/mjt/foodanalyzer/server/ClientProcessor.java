@@ -20,7 +20,7 @@ public class ClientProcessor {
     private static final String SOCKET_CHANNEL_ACCEPTION_ERROR = "Could not accept socketChannel.";
 
     private static final int SLEEP_MILIS = 256;
-    private static final short BUFFER_SIZE = 2048;
+    private static final short BUFFER_SIZE = 4096;
 
     private Selector selector;
     private Database database;

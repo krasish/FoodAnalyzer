@@ -16,15 +16,15 @@ public class Database {
     }
 
     public void addFood(List<Food> foods) {
-        descriptionMap.putIfAbsent(foods.get(0).getDescription(), foods);
-        if (foods.get(0).getGtinUpc() != null) {
-            gtinUpcMap.putIfAbsent(foods.get(0).getGtinUpc(), null);
+        descriptionMap.putIfAbsent(foods.iterator().next().getDescription(), foods);
+        if (foods.iterator().next().getGtinUpc() != null) {
+            gtinUpcMap.putIfAbsent(foods.iterator().next().getGtinUpc(), foods);
         }
     }
 
     public void addNutritionData(NutritionData nutritionData) {
         if (nutritionData != null) {
-            fdcIdMap.put(nutritionData.getFdcId(), nutritionData);
+            fdcIdMap.putIfAbsent(nutritionData.getFdcId(), nutritionData);
         }
     }
 

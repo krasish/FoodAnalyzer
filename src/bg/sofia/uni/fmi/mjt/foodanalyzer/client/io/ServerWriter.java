@@ -8,7 +8,7 @@ import java.util.Scanner;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.client.resolver.CommandResolver;
 
 public class ServerWriter implements Runnable {
-    private static final int BUFFER_SIZE = 2048;
+    private static final int BUFFER_SIZE = 4096;
 
     private static final String WRITE_TO_SERVER_ERROR = "Writing to socketChannel was unsuccesful!";
     private static final String UNPARSABLE_COMMAND_ERROR = "Unsupported command!";

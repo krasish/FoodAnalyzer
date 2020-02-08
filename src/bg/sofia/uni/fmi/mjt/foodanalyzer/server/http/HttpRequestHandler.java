@@ -14,10 +14,15 @@ public class HttpRequestHandler {
             + "/search?generalSearchInput=%s&requireAllWords=true" + "&api_key=%s";
     private static final String FOOD_DETAILS_ENDPOINT_TEMPLATE = "https://api.nal.usda.gov/fdc/v1/%d?api_key=%s";
 
-    private static HttpClient client = HttpClient.newHttpClient();
+    private HttpClient client;
+
+    public HttpRequestHandler() {
+        client = HttpClient.newHttpClient();
+    }
+
     private static final int TIMEOUT_SECONDS = 45;
 
-    public static CompletableFuture<String> handleBarcodeRequest(String barcode) {
+    public CompletableFuture<String> handleBarcodeRequest(String barcode) {
         String barcodeURIAsString = String.format(FOOD_SEARCH_ENDPOINT_URI_TEMPLATE, barcode, API_KEY);
         URI barcodeURI = URI.create(barcodeURIAsString);
 
@@ -27,7 +32,7 @@ public class HttpRequestHandler {
         return client.sendAsync(barcodeRequest, BodyHandlers.ofString()).thenApply(HttpResponse::body);
     }
 
-    public static CompletableFuture<String> handleDescriptionRequest(String description) {
+    public CompletableFuture<String> handleDescriptionRequest(String description) {
         String descriptionURIAsString = String.format(FOOD_SEARCH_ENDPOINT_URI_TEMPLATE, description, API_KEY);
         URI descriptionURI = URI.create(descriptionURIAsString);
 
@@ -37,8 +42,14 @@ public class HttpRequestHandler {
         return client.sendAsync(descriptionRequest, BodyHandlers.ofString()).thenApply(HttpResponse::body);
     }
 
-    public static void handlefdcIdRequest(int fdcId) {
+    public CompletableFuture<String> handlefdcIdRequest(int fdcId) {
+        String fdcIdURIAsString = String.format(FOOD_DETAILS_ENDPOINT_TEMPLATE, fdcId, API_KEY);
+        URI fdcIdURI = URI.create(fdcIdURIAsString);
 
+        HttpRequest fdcIdRequest = HttpRequest.newBuilder(fdcIdURI).timeout(Duration.ofSeconds(TIMEOUT_SECONDS))
+                .build();
+
+        return client.sendAsync(fdcIdRequest, BodyHandlers.ofString()).thenApply(HttpResponse::body);
     }
 
 }

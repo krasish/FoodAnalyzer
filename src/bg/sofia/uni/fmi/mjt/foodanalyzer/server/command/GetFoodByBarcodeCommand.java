@@ -31,8 +31,11 @@ public class GetFoodByBarcodeCommand extends Command {
             result.forEach(food -> writeToChannel(food.toString(), socketChannel, buffer));
             return;
         }
+        HttpRequestHandler httpHandler = new HttpRequestHandler();
 
-        HttpRequestHandler.handleBarcodeRequest(barcode).thenApply(parseJsonFunction)
-                .thenAccept(list -> list.forEach(food -> writeToChannel(food.toString(), socketChannel, buffer)));
+        httpHandler.handleBarcodeRequest(barcode).thenApply(parseJsonFunction).thenAccept(list -> {
+            database.addFood(list);
+            list.forEach(food -> writeToChannel(food.toString(), socketChannel, buffer));
+        });
     }
 }

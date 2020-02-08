@@ -11,6 +11,8 @@ import bg.sofia.uni.fmi.mjt.foodanalyzer.server.http.HttpRequestHandler;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.http.json.JSONParser;
 
 public class GetFoodByDescriptionCommand extends Command {
+    private static final String NULL_DESCRIPTION = "Description was null";
+
     private String description;
     private static Function<? super String, ? extends List<Food>> parseJsonFunction = json -> JSONParser
             .parseFromFoodSearchEndpoint(json);
@@ -18,7 +20,7 @@ public class GetFoodByDescriptionCommand extends Command {
     public GetFoodByDescriptionCommand(SocketChannel socketChannel, String description) {
         super(socketChannel);
         if (description == null) {
-            throw new IllegalArgumentException("Descrition was null");
+            throw new IllegalArgumentException(NULL_DESCRIPTION);
         }
         this.description = description;
     }
@@ -30,9 +32,12 @@ public class GetFoodByDescriptionCommand extends Command {
             result.forEach(food -> writeToChannel(food.toString(), socketChannel, buffer));
             return;
         }
+        HttpRequestHandler httpHandler = new HttpRequestHandler();
 
-        HttpRequestHandler.handleDescriptionRequest(description).thenApply(parseJsonFunction)
-                .thenAccept(list -> list.forEach(food -> writeToChannel(food.toString(), socketChannel, buffer)));
+        httpHandler.handleDescriptionRequest(description).thenApply(parseJsonFunction).thenAccept(list -> {
+            database.addFood(list);
+            list.forEach(food -> writeToChannel(food.toString(), socketChannel, buffer));
+        });
     }
 
 }
