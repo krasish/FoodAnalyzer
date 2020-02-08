@@ -1,27 +1,30 @@
 package bg.sofia.uni.fmi.mjt.foodanalyzer.server;
 
-import java.io.Closeable;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.Iterator;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.command.Command;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.command.CommandParser;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Database;
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.runnables.ClientAcceptor;
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.runnables.ClientHandler;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.io.ChannelReader;
 
-public class ClientProcessor implements Closeable {
+public class ClientProcessor {
     private static final String SELECTOR_ERROR_MESSAGE = "Selection of keys was unsuccessful";
+    private static final String CHANNEL_DISCONNEECT = "A channel was disconected!";
+    private static final String CLOSING_CHANNEL_ERROR = "An error occured while closing channel!";
     private static final int SLEEP_MILIS = 256;
+    private static final short BUFFER_SIZE = 2048;
+
     private Selector selector;
-    private ExecutorService executor;
     private Database database;
 
     public ClientProcessor(Selector selector) {
         this.selector = selector;
-        this.executor = Executors.newCachedThreadPool();
         this.database = new Database();
     }
 
@@ -34,21 +37,58 @@ public class ClientProcessor implements Closeable {
                 continue;
             }
             var selectedKeys = selector.selectedKeys();
-            System.out.println(selectedKeys.size());
             Iterator<SelectionKey> iterator = selectedKeys.iterator();
 
             while (iterator.hasNext()) {
                 SelectionKey currentKey = iterator.next();
-                // System.out.println(System.currentTimeMillis());
+
                 if (currentKey.isAcceptable()) {
-                    ClientAcceptor acceptor = new ClientAcceptor(selector, currentKey);
-                    executor.execute(acceptor);
+                    processAcceptableKey(currentKey);
                 } else if (currentKey.isReadable()) {
-                    ClientHandler handler = new ClientHandler(currentKey, database);
-                    executor.execute(handler);
+                    processReadableKey(currentKey);
                 }
                 iterator.remove();
             }
+        }
+    }
+
+    void processAcceptableKey(SelectionKey currentKey) {
+        ServerSocketChannel sockChannel = (ServerSocketChannel) currentKey.channel();
+        SocketChannel accept;
+        try {
+            accept = sockChannel.accept();
+            accept.configureBlocking(false);
+            accept.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+        } catch (IOException e) {
+            System.out.println("Could not accept socketChannel.");
+            e.printStackTrace();
+        }
+    }
+
+    void processReadableKey(SelectionKey currentKey) {
+        SocketChannel socketChannel = (SocketChannel) currentKey.channel();
+        ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
+        ChannelReader channelReader = new ChannelReader(socketChannel, buffer);
+        String input;
+        try {
+            input = channelReader.read();
+        } catch (IOException ioe) {
+            System.out.println("Unable to read from channel");
+            currentKey.cancel();
+            stopChannel(currentKey, socketChannel);
+            return;
+        }
+
+        Command command = CommandParser.parse(input, socketChannel);
+        command.execute(database, buffer);
+    }
+
+    void stopChannel(SelectionKey key, SocketChannel sokcetChannel) {
+        key.cancel();
+        try {
+            sokcetChannel.close();
+        } catch (IOException e) {
+            System.out.println("An error occured while closing channel!");
         }
     }
 
@@ -69,8 +109,4 @@ public class ClientProcessor implements Closeable {
         }
     }
 
-    @Override
-    public void close() throws IOException {
-        executor.shutdown();
-    }
 }

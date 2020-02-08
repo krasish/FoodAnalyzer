@@ -15,7 +15,7 @@ public class FoodAnalyzerServer implements Closeable {
     private static final String WRONG_PORT_ERROR = "Port not in supported range";
     private static final String SERVER_ERROR = "Server was unable to start.";
     private static final String NULL_HOST = "Host must not be null";
-    private static final String CLOSING_PROCESSOR_ERROR = "Closing processor was not successful";
+    private static final String STARTED_MESSAGE = "Server started!";
 
     private ServerSocketChannel serverSocketChannel;
     private Selector selector;
@@ -41,13 +41,9 @@ public class FoodAnalyzerServer implements Closeable {
             System.out.println(SERVER_ERROR);
             e.printStackTrace();
         }
-        try (ClientProcessor processor = new ClientProcessor(selector)) {
-            System.out.println("Server started!");
-            processor.process();
-        } catch (IOException e) {
-            System.out.println(CLOSING_PROCESSOR_ERROR);
-            e.printStackTrace();
-        }
+        ClientProcessor processor = new ClientProcessor(selector);
+        System.out.println(STARTED_MESSAGE);
+        processor.process();
 
     }
 

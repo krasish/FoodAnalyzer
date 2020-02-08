@@ -17,7 +17,7 @@ public class ChannelReader {
 
     public String read() throws IOException {
         int read = socketChannel.read(buffer);
-        if (read < 0) {
+        if (read <= 0) {
             socketChannel.close();
             throw new ClosedChannelException();
         }
