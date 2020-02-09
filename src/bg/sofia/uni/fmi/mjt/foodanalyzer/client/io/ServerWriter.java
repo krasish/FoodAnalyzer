@@ -31,7 +31,7 @@ public class ServerWriter implements Runnable {
         System.err.println(UNPARSABLE_COMMAND_ERROR);
     }
 
-    private void writeToServer(String prompt, SocketChannel socketChannel, ByteBuffer buffer) {
+    public void writeToServer(String prompt, SocketChannel socketChannel, ByteBuffer buffer) {
         try {
             buffer.clear();
             buffer.put(prompt.getBytes());

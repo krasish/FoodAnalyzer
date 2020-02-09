@@ -1,6 +1,7 @@
 package bg.sofia.uni.fmi.mjt.foodanalyzer.client.io;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
@@ -23,7 +24,7 @@ public class ServerReader implements Runnable {
                 break;
             }
             try {
-                readFromChannel(socketChannel);
+                readFromChannel(socketChannel, System.out);
             } catch (IOException e) {
                 System.out.println(DISCONNECTED_MESSAGE);
                 break;
@@ -32,11 +33,11 @@ public class ServerReader implements Runnable {
 
     }
 
-    private void readFromChannel(SocketChannel socketChannel) throws IOException {
+    public void readFromChannel(SocketChannel socketChannel, PrintStream stream) throws IOException {
         buffer.clear();
         socketChannel.read(buffer);
         buffer.flip();
         String reply = new String(buffer.array(), 0, buffer.limit()); // buffer drain
-        System.out.println(reply);
+        stream.println(reply);
     }
 }
