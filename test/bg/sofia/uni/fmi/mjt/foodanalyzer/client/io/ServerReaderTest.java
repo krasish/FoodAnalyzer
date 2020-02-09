@@ -13,6 +13,7 @@ import bg.sofia.uni.fmi.mjt.foodanalyzer.server.stubs.FixedResponseSocketChannel
 
 public class ServerReaderTest {
     private static final String MESSAGE = "Kaji chestno";
+    private static final String TEST_MESSAGE = "Reading content from channel is as expected";
 
     @Test
     public void testReadFromChannelGetsCorrectResponses() throws IOException {
@@ -26,7 +27,8 @@ public class ServerReaderTest {
 
         String actual = outputStream.toString();
 
-        assertEquals(expected, actual);
+        assertEquals(TEST_MESSAGE, expected, actual);
+
     }
 
 }

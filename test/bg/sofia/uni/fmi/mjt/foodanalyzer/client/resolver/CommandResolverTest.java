@@ -45,7 +45,7 @@ public class CommandResolverTest {
         final String barcodePrompt1 = "get-food-by-barcode --code=009800146130";
         final String barcodePrompt2 = "get-food-by-barcode --img=C:\\Users\\krasi"
                 + "\\eclipse-workspace\\FoodAnalyzer\\resources\\barcode.gif";
-        final String barcodePrompt2Expected = "get-food-by-barcode --code=725272730706";
+        final String barcodePrompt2Expected = "get-food-by-barcode --code=009427402305";
         final String barcodePrompt3 = "get-food-by-barcode --img=C:\\Users\\krasi"
                 + "\\eclipse-workspace\\FoodAnalyzer\\resources\\barcode.gif --code=009800146130";
         final String barcodePrompt3Expected = "get-food-by-barcode --code=009800146130";
@@ -63,4 +63,9 @@ public class CommandResolverTest {
 
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testResolveThrowsExceptionWhenPathIsIncorrect() {
+        final String fakePathCommand = "get-food-by-barcode --img=blablabla\bla";
+        resolver.resolve(fakePathCommand);
+    }
 }
