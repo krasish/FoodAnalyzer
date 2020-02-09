@@ -20,7 +20,7 @@ public abstract class Command {
 
     public abstract void execute(Database database, ByteBuffer buffer);
 
-    public void writeToChannel(String input, SocketChannel socketChannel, ByteBuffer buffer) {
+    void writeToChannel(String input, SocketChannel socketChannel, ByteBuffer buffer) {
         ChannelWriter writer = new ChannelWriter(socketChannel, buffer);
         try {
             writer.write(input.toString());

@@ -33,6 +33,10 @@ public class GetFoodByBarcodeCommand extends Command {
         }
         HttpRequestHandler httpHandler = new HttpRequestHandler();
 
+        handleHttpRquest(httpHandler, database, buffer);
+    }
+
+    public void handleHttpRquest(HttpRequestHandler httpHandler, Database database, ByteBuffer buffer) {
         httpHandler.handleBarcodeRequest(barcode).thenApply(parseJsonFunction).thenAccept(list -> {
             database.addFood(list);
             list.forEach(food -> writeToChannel(food.toString(), socketChannel, buffer));

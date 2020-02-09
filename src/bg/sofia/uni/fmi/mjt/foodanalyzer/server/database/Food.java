@@ -5,7 +5,7 @@ public class Food {
     private String description;
     private String gtinUpc;
 
-    Food(int fdcId, String description, String gtinUpc, String ingredients) {
+    public Food(int fdcId, String description, String gtinUpc, String ingredients) {
         this.fdcId = fdcId;
         this.description = description;
         this.gtinUpc = gtinUpc;
