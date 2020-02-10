@@ -1,6 +1,48 @@
 package bg.sofia.uni.fmi.mjt.foodanalyzer.server.database;
 
 public class Food {
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + fdcId;
+        result = prime * result + ((gtinUpc == null) ? 0 : gtinUpc.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Food other = (Food) obj;
+        if (description == null) {
+            if (other.description != null) {
+                return false;
+            }
+        } else if (!description.equals(other.description)) {
+            return false;
+        }
+        if (fdcId != other.fdcId) {
+            return false;
+        }
+        if (gtinUpc == null) {
+            if (other.gtinUpc != null) {
+                return false;
+            }
+        } else if (!gtinUpc.equals(other.gtinUpc)) {
+            return false;
+        }
+        return true;
+    }
+
     private int fdcId;
     private String description;
     private String gtinUpc;

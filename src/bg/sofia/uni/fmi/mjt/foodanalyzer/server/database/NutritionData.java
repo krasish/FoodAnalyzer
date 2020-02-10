@@ -13,7 +13,6 @@ public class NutritionData {
     private NutrientContainer labelNutrients;
 
     public NutritionData(String description, String ingredients, int fdcId, NutrientContainer labelNutrients) {
-        super();
         this.description = description;
         this.ingredients = ingredients;
         this.fdcId = fdcId;
@@ -53,6 +52,56 @@ public class NutritionData {
         }
         return builder.toString();
 
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + fdcId;
+        result = prime * result + ((ingredients == null) ? 0 : ingredients.hashCode());
+        result = prime * result + ((labelNutrients == null) ? 0 : labelNutrients.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        NutritionData other = (NutritionData) obj;
+        if (description == null) {
+            if (other.description != null) {
+                return false;
+            }
+        } else if (!description.equals(other.description)) {
+            return false;
+        }
+        if (fdcId != other.fdcId) {
+            return false;
+        }
+        if (ingredients == null) {
+            if (other.ingredients != null) {
+                return false;
+            }
+        } else if (!ingredients.equals(other.ingredients)) {
+            return false;
+        }
+        if (labelNutrients == null) {
+            if (other.labelNutrients != null) {
+                return false;
+            }
+        } else if (!labelNutrients.equals(other.labelNutrients)) {
+            return false;
+        }
+        return true;
     }
 
 }
