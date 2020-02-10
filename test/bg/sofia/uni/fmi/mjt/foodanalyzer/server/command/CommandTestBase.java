@@ -10,10 +10,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Database;
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Food;
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Nutrient;
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.NutrientContainer;
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.NutritionData;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.Food;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.Nutrient;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.NutrientContainer;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.NutritionData;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.stubs.StreamWritingSocketChannelStub;
 
 public abstract class CommandTestBase {

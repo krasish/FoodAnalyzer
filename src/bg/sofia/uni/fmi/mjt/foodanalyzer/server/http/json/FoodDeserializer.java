@@ -10,7 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Food;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.Food;
 
 public class FoodDeserializer implements JsonDeserializer<List<Food>> {
 

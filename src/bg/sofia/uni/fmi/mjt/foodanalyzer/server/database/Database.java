@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.Food;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.NutritionData;
+
 public class Database {
     private Map<String, List<Food>> descriptionMap;
     private Map<Integer, NutritionData> fdcIdMap;

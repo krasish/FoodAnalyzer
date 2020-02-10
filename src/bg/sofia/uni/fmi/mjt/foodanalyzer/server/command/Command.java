@@ -9,7 +9,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Database;
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Food;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.Food;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.http.HttpRequestHandler;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.http.json.JSONParser;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.io.ChannelWriter;

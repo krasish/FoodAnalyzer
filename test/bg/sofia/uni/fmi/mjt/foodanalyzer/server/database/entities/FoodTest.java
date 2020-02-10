@@ -1,8 +1,10 @@
-package bg.sofia.uni.fmi.mjt.foodanalyzer.server.database;
+package bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.Food;
 
 public class FoodTest {
     private static final int FDC_ID = 00000;

@@ -7,8 +7,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Food;
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.NutritionData;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.Food;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.NutritionData;
 
 public class JSONParser {
     public static List<Food> parseFromFoodSearchEndpoint(String inputJson) {

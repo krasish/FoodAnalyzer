@@ -1,4 +1,4 @@
-package bg.sofia.uni.fmi.mjt.foodanalyzer.server.database;
+package bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities;
 
 public class Food {
     @Override

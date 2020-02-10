@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Database;
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Food;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.Food;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.http.HttpRequestHandler;
 
 public class GetFoodByBarcodeCommand extends Command {

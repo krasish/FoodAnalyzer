@@ -1,4 +1,4 @@
-package bg.sofia.uni.fmi.mjt.foodanalyzer.server.database;
+package bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities;
 
 public class NutritionData {
     private static final String NUTRITION_WITH_INGREDIENTS_DATA_TEMPLATE = "description: %s%n"

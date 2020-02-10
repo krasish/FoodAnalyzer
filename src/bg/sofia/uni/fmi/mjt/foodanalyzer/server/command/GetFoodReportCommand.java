@@ -5,7 +5,7 @@ import java.nio.channels.SocketChannel;
 import java.util.function.Function;
 
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Database;
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.NutritionData;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.NutritionData;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.http.HttpRequestHandler;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.http.json.JSONParser;
 

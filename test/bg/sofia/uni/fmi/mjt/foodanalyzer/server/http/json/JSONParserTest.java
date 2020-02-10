@@ -4,10 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Food;
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Nutrient;
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.NutrientContainer;
-import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.NutritionData;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.Food;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.Nutrient;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.NutrientContainer;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.entities.NutritionData;
 
 public class JSONParserTest {
     private static final String MESSAGE_SEARCH_TEST = "Parsing foods is correct";
