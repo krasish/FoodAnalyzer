@@ -1,13 +1,17 @@
 package bg.sofia.uni.fmi.mjt.foodanalyzer.server.command;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Database;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Food;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.stubs.StreamWritingSocketChannelStub;
 
 public abstract class CommandTestBase {
     protected static final String TEST_1_MESSAGE = "Command writes to channel info for food present in database";
@@ -23,9 +27,12 @@ public abstract class CommandTestBase {
     protected static final String INEXISTING_DESCRIPTION = "fafla";
 
     protected static final String INGREDIENTS_1 = "gadosti";
-    protected static final ByteBuffer BUFFER = ByteBuffer.allocate(BUFFER_SIZE);
 
     protected static Food testFood1 = new Food(FDC_ID_1, DESCRIPTION_1, BARCODE_1, INGREDIENTS_1);
+
+    protected OutputStream outputStream;
+    protected StreamWritingSocketChannelStub channelStub;
+    protected ByteBuffer buffer;
 
     @BeforeClass
     public static void initializeDatabase() {
@@ -35,6 +42,13 @@ public abstract class CommandTestBase {
         database = new Database();
         database.addFood(foods);
 
+    }
+
+    @Before
+    public void initializeResources() {
+        outputStream = new ByteArrayOutputStream();
+        channelStub = new StreamWritingSocketChannelStub(outputStream);
+        buffer = ByteBuffer.allocate(BUFFER_SIZE);
     }
 
 }

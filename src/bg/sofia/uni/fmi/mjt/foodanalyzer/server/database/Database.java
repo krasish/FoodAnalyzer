@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Database {
     private Map<String, List<Food>> descriptionMap;
     private Map<Integer, NutritionData> fdcIdMap;
-    private Map<String, List<Food>> gtinUpcMap;
+    private Map<String, Food> gtinUpcMap;
 
     public Database() {
         fdcIdMap = new ConcurrentHashMap<>();
@@ -17,9 +17,7 @@ public class Database {
 
     public void addFood(List<Food> foods) {
         descriptionMap.putIfAbsent(foods.iterator().next().getDescription(), foods);
-        if (foods.iterator().next().getGtinUpc() != null) {
-            gtinUpcMap.putIfAbsent(foods.iterator().next().getGtinUpc(), foods);
-        }
+        foods.stream().filter(f -> f.getGtinUpc() != null).forEach(food -> gtinUpcMap.put(food.getGtinUpc(), food));
     }
 
     public void addNutritionData(NutritionData nutritionData) {
@@ -36,7 +34,7 @@ public class Database {
         return fdcIdMap.get(fdcID);
     }
 
-    public List<Food> getByBarcode(String barcode) {
+    public Food getByBarcode(String barcode) {
         return gtinUpcMap.get(barcode);
     }
 }
