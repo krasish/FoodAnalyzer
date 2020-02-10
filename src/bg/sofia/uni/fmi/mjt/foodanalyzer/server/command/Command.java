@@ -8,6 +8,8 @@ import bg.sofia.uni.fmi.mjt.foodanalyzer.server.database.Database;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.io.ChannelWriter;
 
 public abstract class Command {
+    private static final String MESSAGE_INTERNAL_ERROR = "An internal error occured."
+            + " Your request could not be processed";
     private static final String CHANNEL_WRITE_ERROR = "Unsuccessful attempt to write to channel!";
     protected SocketChannel socketChannel;
 
@@ -28,5 +30,9 @@ public abstract class Command {
             System.err.println(CHANNEL_WRITE_ERROR);
             e.printStackTrace();
         }
+    }
+
+    public void handleError(ByteBuffer buffer) {
+        writeToChannel(MESSAGE_INTERNAL_ERROR, socketChannel, buffer);
     }
 }

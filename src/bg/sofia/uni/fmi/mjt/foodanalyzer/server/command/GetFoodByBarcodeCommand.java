@@ -36,10 +36,17 @@ public class GetFoodByBarcodeCommand extends Command {
         }
         HttpRequestHandler httpHandler = new HttpRequestHandler();
 
-        handleHttpRquest(httpHandler, database, buffer);
+        try {
+            handleHttpRquest(httpHandler, database, buffer);
+        } catch (IllegalArgumentException iae) {
+            handleError(buffer);
+        }
     }
 
     public void handleHttpRquest(HttpRequestHandler httpHandler, Database database, ByteBuffer buffer) {
+        if (httpHandler == null || database == null || buffer == null) {
+            throw new IllegalArgumentException("HandleHttpRequest recieved null argument");
+        }
         httpHandler.handleBarcodeRequest(barcode).thenApply(parseJsonFunction).thenAccept(list -> {
             if (list.isEmpty()) {
                 writeToChannel(EMPTY_LIST_ERROR, socketChannel, buffer);
@@ -49,4 +56,5 @@ public class GetFoodByBarcodeCommand extends Command {
             }
         });
     }
+
 }
