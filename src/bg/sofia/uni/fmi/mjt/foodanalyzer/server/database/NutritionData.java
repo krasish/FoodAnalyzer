@@ -1,7 +1,11 @@
 package bg.sofia.uni.fmi.mjt.foodanalyzer.server.database;
 
 public class NutritionData {
-    private static final String NUTRITION_DATA_TEMPLATE = "description: %s%ningredients: %s%nfdcId: %s%n";
+    private static final String NUTRITION_WITH_INGREDIENTS_DATA_TEMPLATE = "description: %s%n"
+            + "ingredients: %s%nfdcId: %s%n";
+    private static final String NUTRITION_NO_INGREDIENTS_DATA_TEMPLATE = "description: %s%nfdcId: %s%n";
+
+    private static final Object NO_NUTRITION_DATA_ERROR = "Nutrition data for this food was not found :(";
 
     private String description;
     private String ingredients;
@@ -34,9 +38,19 @@ public class NutritionData {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder(
-                String.format(NUTRITION_DATA_TEMPLATE, description, ingredients, fdcId));
-        builder.append(labelNutrients);
+        StringBuilder builder;
+        if (ingredients == null) {
+            builder = new StringBuilder(String.format(NUTRITION_NO_INGREDIENTS_DATA_TEMPLATE, description, fdcId));
+        } else {
+            builder = new StringBuilder(
+                    String.format(NUTRITION_WITH_INGREDIENTS_DATA_TEMPLATE, description, ingredients, fdcId));
+        }
+
+        if (labelNutrients == null) {
+            builder.append(NO_NUTRITION_DATA_ERROR);
+        } else {
+            builder.append(labelNutrients);
+        }
         return builder.toString();
 
     }

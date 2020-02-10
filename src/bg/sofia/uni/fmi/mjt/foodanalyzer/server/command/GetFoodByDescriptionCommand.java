@@ -12,6 +12,7 @@ import bg.sofia.uni.fmi.mjt.foodanalyzer.server.http.json.JSONParser;
 
 public class GetFoodByDescriptionCommand extends Command {
     private static final String NULL_DESCRIPTION = "Description was null";
+    private static final String EMPTY_LIST_ERROR = "Information about that food was not found";
 
     private String description;
     private static Function<? super String, ? extends List<Food>> parseJsonFunction = json -> JSONParser
@@ -34,9 +35,17 @@ public class GetFoodByDescriptionCommand extends Command {
         }
         HttpRequestHandler httpHandler = new HttpRequestHandler();
 
+        handleHttpRquest(httpHandler, database, buffer);
+    }
+
+    public void handleHttpRquest(HttpRequestHandler httpHandler, Database database, ByteBuffer buffer) {
         httpHandler.handleDescriptionRequest(description).thenApply(parseJsonFunction).thenAccept(list -> {
-            database.addFood(list);
-            list.forEach(food -> writeToChannel(food.toString(), socketChannel, buffer));
+            if (list.isEmpty()) {
+                writeToChannel(EMPTY_LIST_ERROR, socketChannel, buffer);
+            } else {
+                database.addFood(list);
+                list.forEach(food -> writeToChannel(food.toString(), socketChannel, buffer));
+            }
         });
     }
 
