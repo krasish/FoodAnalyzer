@@ -31,6 +31,7 @@ public class GetFoodReportCommand extends Command {
             writeToChannel(result.toString(), socketChannel, buffer);
             return;
         }
+
         HttpRequestHandler handler = new HttpRequestHandler();
         handler.handlefdcIdRequest(fdcId).thenApply(parseJsonFunciton).thenAccept(data -> {
             database.addNutritionData(data);
