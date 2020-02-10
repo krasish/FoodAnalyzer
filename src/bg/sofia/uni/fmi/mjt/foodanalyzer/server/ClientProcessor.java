@@ -15,7 +15,8 @@ import bg.sofia.uni.fmi.mjt.foodanalyzer.server.io.ChannelReader;
 
 public class ClientProcessor {
     private static final String SELECTOR_ERROR_MESSAGE = "Selection of keys was unsuccessful";
-    private static final String CHANNEL_DISCONNECT = "A channel was disconected due to inability to read!";
+    private static final String CHANNEL_CONNECT_MESSAGE = "Client connected!";
+    private static final String CHANNEL_DISCONNECT_MESSAGE = "Client disconnected!";
     private static final String CLOSING_CHANNEL_ERROR = "An error occured while closing channel!";
     private static final String SOCKET_CHANNEL_ACCEPTION_ERROR = "Could not accept socketChannel.";
 
@@ -61,6 +62,7 @@ public class ClientProcessor {
             accept = sockChannel.accept();
             accept.configureBlocking(false);
             accept.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+            System.out.println(CHANNEL_CONNECT_MESSAGE);
         } catch (IOException e) {
             System.out.println(SOCKET_CHANNEL_ACCEPTION_ERROR);
             e.printStackTrace();
@@ -75,7 +77,7 @@ public class ClientProcessor {
         try {
             input = channelReader.read();
         } catch (IOException ioe) {
-            System.out.println(CHANNEL_DISCONNECT);
+            System.out.println(CHANNEL_DISCONNECT_MESSAGE);
             currentKey.cancel();
             stopChannel(currentKey, socketChannel);
             return;
