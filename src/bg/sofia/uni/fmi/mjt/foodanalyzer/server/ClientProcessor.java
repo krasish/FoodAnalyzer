@@ -85,10 +85,10 @@ public class ClientProcessor {
         command.execute(database, buffer);
     }
 
-    void stopChannel(SelectionKey key, SocketChannel sokcetChannel) {
+    void stopChannel(SelectionKey key, SocketChannel socketChannel) {
         key.cancel();
         try {
-            sokcetChannel.close();
+            socketChannel.close();
         } catch (IOException e) {
             System.out.println(CLOSING_CHANNEL_ERROR);
         }

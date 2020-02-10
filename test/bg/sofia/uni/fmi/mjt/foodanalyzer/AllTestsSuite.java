@@ -7,6 +7,7 @@ import bg.sofia.uni.fmi.mjt.foodanalyzer.client.io.ServerReaderTest;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.client.io.ServerWriterTest;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.client.resolver.BarcodeResolverTest;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.client.resolver.CommandResolverTest;
+import bg.sofia.uni.fmi.mjt.foodanalyzer.server.ClientProcessorTest;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.command.CommandParserTest;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.command.GetFoodByBarcodeCommandTest;
 import bg.sofia.uni.fmi.mjt.foodanalyzer.server.command.GetFoodByDescriptionCommandTest;
@@ -21,7 +22,7 @@ import bg.sofia.uni.fmi.mjt.foodanalyzer.server.io.ChannelWriterTest;
 @Suite.SuiteClasses({ CommandParserTest.class, GetFoodByDescriptionCommandTest.class, GetFoodByBarcodeCommandTest.class,
         NutritionDataTest.class, ChannelReaderTest.class, GetFoodReportCommandTest.class, ServerReaderTest.class,
         ServerWriterTest.class, BarcodeResolverTest.class, CommandResolverTest.class, FoodTest.class,
-        JSONParserTest.class, ChannelWriterTest.class })
+        JSONParserTest.class, ChannelWriterTest.class, ClientProcessorTest.class })
 public class AllTestsSuite {
     // nothing
 }
